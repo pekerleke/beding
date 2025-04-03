@@ -17,7 +17,7 @@ Semantic Search Chat Demo es una aplicación demo de chat que te permite cargar 
 
 ## Instalación y Ejecución
 
-Seguí los pasos en la [Wiki de la App](./wiki) para levantar la aplicación por primera vez.
+Seguí los pasos en la [Wiki de la App](https://github.com/pekerleke/semantic-search-chat-demo/wiki) para levantar la aplicación por primera vez.
 
 ## Notas
 
