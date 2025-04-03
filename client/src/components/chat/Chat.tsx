@@ -23,6 +23,7 @@ const Chat: React.FC = () => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const conversationId = useRef<string>(Date.now().toString());
     const [isLoading, setIsLoading] = useState(false);
+    const [status, setStatus] = useState<"loading" | "error" | "success">();
     const [resources, setResources] = useState<any>([]);
 
     const scrollToBottom = () => {
@@ -46,7 +47,8 @@ const Chat: React.FC = () => {
 
         try {
             setIsLoading(true);
-            const response = await axios.post<ChatResponse>('http://localhost:3001/chat', {
+            setStatus("loading");
+            const response = await axios.post<ChatResponse>('http://localhost:9290/chat', {
                 message: inputMessage,
                 conversationId: conversationId.current,
             });
@@ -60,8 +62,10 @@ const Chat: React.FC = () => {
                 setMessages(prev => [...prev, responseMessage]);
             }
             setIsLoading(false);
+            setStatus("success");
         } catch (error) {
             setIsLoading(false);
+            setStatus("error");
             console.error('Error sending message:', error);
         }
     };
@@ -78,12 +82,13 @@ const Chat: React.FC = () => {
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
-                {isLoading && <Loader />}
-                {(!isLoading && Boolean(resources.length)) && (
+                {status === "loading" && <Loader />}
+                {(status === "success" && Boolean(resources.length)) && (
                     <div className={styles.sourceContainer}>
                         Fuentes: {resources?.map((resource: any) => resource.source).join(", ")}
                     </div>
                 )}
+                {status === "error" && <div>Ups algo salio mal</div>}
             </div>
             <form onSubmit={handleSubmit} className={styles.inputForm}>
                 <input

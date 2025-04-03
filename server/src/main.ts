@@ -10,6 +10,6 @@ async function bootstrap() {
         allowedHeaders: ['Content-Type'],
     });
 
-    await app.listen(3001);
+    await app.listen(9290);
 }
 void bootstrap();
