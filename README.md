@@ -1,11 +1,12 @@
 # Semantic Search Chat Demo
 
-Semantic Search Chat Demo es una aplicación demo de chat que te permite cargar documentos en Weaviate para obtener contexto tipo RAG (Retrieval Augmented Generation). La app utiliza técnicas como la condensación de consultas, generación de embeddings, RAG y se conecta a OpenAI para generar respuestas basadas en el contexto.
+Semantic Search Chat Demo es una aplicación demo de chat que te permite cargar documentos en Weaviate para obtener contexto tipo RAG. La app utiliza técnicas como la condensación de consultas, generación de embeddings, RAG y se utiliza la api de OpenAI para generar respuestas basadas en el contexto.
 
 ## Características
 
-- **Chat interactivo:** Charle con el sistema y recibí respuestas con contexto.
+- **Chat interactivo:** Habla con el sistema y recibí respuestas con contexto.
 - **Carga de documentos:** Importá documentos en Weaviate para enriquecer el contexto.
+- **Historial interno por sesión:** Incorpora un historial por sesión de usuario, permitiendo mantener un contexto separado por cada pestaña
 - **Condensación de consultas:** Optimiza las consultas para obtener respuestas más precisas.
 - **Embeddings:** Convierte el texto en representaciones vectoriales.
 - **Integración con OpenAI:** Se conecta a OpenAI para generar respuestas más naturales y acertadas.
@@ -14,6 +15,7 @@ Semantic Search Chat Demo es una aplicación demo de chat que te permite cargar 
 
 - **Node.js**
 - **Docker**
+- **OpenAI api key** (se debe setear en `/server/.env`)
 
 ## Instalación y Ejecución
 
