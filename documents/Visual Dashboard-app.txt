@@ -1,0 +1,2 @@
+name: Visual Dashboard
+description: "Visual Dashboard transforma datos complejos en visualizaciones interactivas y claras. Con paneles personalizables, facilita el seguimiento de indicadores clave y la elaboración de estrategias basadas en información precisa." 

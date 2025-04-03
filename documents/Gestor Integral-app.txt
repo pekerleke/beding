@@ -1,0 +1,2 @@
+name: Gestor Integral
+description: "Gestor Integral es una aplicación enfocada en la administración centralizada de recursos y procesos. Su diseño intuitivo y funcionalidades robustas la convierten en una herramienta indispensable para la coordinación operativa." 

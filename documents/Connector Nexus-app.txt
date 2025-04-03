@@ -1,0 +1,2 @@
+name: Connector Nexus
+description: "Connector Nexus es una solución avanzada para la integración de sistemas y aplicaciones. Su diseño modular y flexible asegura una conexión ágil y segura, permitiendo un intercambio de datos fluido y eficiente." 

@@ -1,0 +1,9 @@
+name: Tech Innovators
+integrantes:
+  - Pepito Perez
+  - Josesito Rodriguez
+  - Oscar Garcia
+apps:
+  - BackOffice Pro
+  - Data Dashboard
+  - Connector Plus

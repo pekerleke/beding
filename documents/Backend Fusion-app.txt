@@ -1,0 +1,2 @@
+name: Backend Fusion
+description: "Backend Fusion integra múltiples sistemas de backend en una plataforma unificada, facilitando la administración y el control centralizado de procesos. Su diseño escalable permite gestionar altos volúmenes de datos sin pérdida de rendimiento." 

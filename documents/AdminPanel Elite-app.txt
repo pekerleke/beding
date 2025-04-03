@@ -1,0 +1,2 @@
+name: AdminPanel Elite
+description: "AdminPanel Elite es una plataforma de administración que centraliza el control de operaciones empresariales. Con un panel de control intuitivo, facilita la supervisión y coordinación de tareas en tiempo real." 

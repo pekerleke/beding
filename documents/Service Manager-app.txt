@@ -1,0 +1,2 @@
+name: Service Manager
+description: "Service Manager está enfocado en la gestión y seguimiento de servicios, centralizando la coordinación de tareas y el monitoreo del estado de procesos. Su interfaz intuitiva mejora la eficiencia en la entrega de servicios." 

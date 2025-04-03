@@ -1,0 +1,9 @@
+name: Future Systems
+integrantes:
+  - Julia Bravo
+  - Pedro Alvarado
+  - Manuel Cortes
+apps:
+  - Platform Supreme
+  - Analytics Quantum
+  - Integrator Prime

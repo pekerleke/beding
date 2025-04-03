@@ -1,0 +1,2 @@
+name: Alertas 360
+description: "Alertas 360 centraliza la gestión de notificaciones, permitiendo configurar umbrales personalizados para distintos indicadores. La aplicación asegura una respuesta rápida ante eventos críticos en el entorno empresarial." 

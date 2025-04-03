@@ -1,0 +1,2 @@
+name: Admin Central
+description: "Admin Central es una plataforma para la gestión administrativa que centraliza el control de operaciones y procesos internos. Su diseño adaptable y funcionalidades avanzadas permiten una administración organizada y eficiente." 

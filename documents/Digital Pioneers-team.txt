@@ -1,0 +1,9 @@
+name: Digital Pioneers
+integrantes:
+  - Luis Herrera
+  - Carla Jimenez
+  - Pablo Vega
+apps:
+  - Control Suite
+  - Insight Reports
+  - Analytics Hub

@@ -1,0 +1,2 @@
+name: Connector Edge
+description: "Connector Edge es una herramienta de integración diseñada para conectar de manera segura diversos sistemas y aplicaciones. Su capacidad de sincronización en tiempo real garantiza un flujo continuo de información entre plataformas." 

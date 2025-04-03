@@ -1,0 +1,2 @@
+name: Connector Plus
+description: "Connector Plus es una herramienta de integración que conecta diversas aplicaciones y sistemas de forma segura y eficiente. Su capacidad para sincronizar datos en tiempo real mejora la comunicación entre departamentos y la interoperabilidad del ecosistema tecnológico." 

@@ -1,0 +1,2 @@
+name: Reporting Genius
+description: "Reporting Genius transforma grandes volúmenes de datos en informes precisos y personalizados. Sus herramientas de análisis permiten detectar tendencias y generar insights estratégicos para la mejora continua." 

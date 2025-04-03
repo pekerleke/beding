@@ -1,0 +1,2 @@
+name: Analytics Hub
+description: "Analytics Hub integra múltiples fuentes de información para ofrecer una visión holística del rendimiento empresarial. Sus herramientas analíticas ayudan a predecir tendencias y a definir estrategias basadas en datos." 

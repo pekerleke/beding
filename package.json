@@ -1,0 +1,12 @@
+{
+    "name": "chat-vector-context",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "start": "concurrently \"cd client && npm start\" \"cd server && npm run start:dev\"",
+        "install:all": "npm install && cd client && npm install && cd ../server && npm install"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}

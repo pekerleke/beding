@@ -1,0 +1,2 @@
+name: Dashboard Pro
+description: "Dashboard Pro ofrece visualizaciones interactivas que facilitan el monitoreo del rendimiento empresarial. Su interfaz amigable y funciones avanzadas permiten analizar datos complejos de manera clara y precisa." 

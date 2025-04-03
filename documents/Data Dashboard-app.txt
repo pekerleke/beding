@@ -1,0 +1,2 @@
+name: Data Dashboard
+description: "Data Dashboard es una plataforma de visualización de datos diseñada para ofrecer reportes interactivos y cuadros de mando personalizados. Permite a los usuarios monitorear indicadores clave en tiempo real y extraer insights estratégicos." 

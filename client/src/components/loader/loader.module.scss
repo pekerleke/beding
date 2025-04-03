@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .dotsContainer {
+        display: flex;
+        gap: 4px;
+    }
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #6B7280;
+    border-radius: 50%;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}

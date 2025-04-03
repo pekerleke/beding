@@ -1,0 +1,2 @@
+name: Control Suite
+description: "Control Suite es una aplicación completa para la supervisión y gestión de procesos internos. Ofrece herramientas de monitoreo y control que facilitan la organización de tareas y el seguimiento de indicadores de desempeño." 

@@ -1,0 +1,9 @@
+name: Innovative Minds
+integrantes:
+  - Jorge Castillo
+  - Alicia Rivera
+  - Patricia Solis
+apps:
+  - Core Engine
+  - Executive Dashboard
+  - Service Manager

@@ -1,0 +1,2 @@
+name: Analytics X
+description: "Analytics X ofrece potentes funciones de análisis y visualización de datos. Integrándose con múltiples fuentes de información, permite a las organizaciones obtener una visión completa del rendimiento y anticipar tendencias futuras." 

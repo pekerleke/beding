@@ -1,0 +1,9 @@
+name: Smart Engineers
+integrantes:
+  - Antonio Garcia
+  - Sofia Morales
+  - Miguel Sanchez
+apps:
+  - MainApp Elite
+  - Monitor Vision
+  - Connector Edge

@@ -1,0 +1,2 @@
+name: Frontend Express
+description: "Frontend Express se enfoca en la mejora de la experiencia del usuario, ofreciendo interfaces modernas, reactivas y fáciles de usar. La aplicación garantiza un rendimiento óptimo en diversas plataformas y dispositivos." 

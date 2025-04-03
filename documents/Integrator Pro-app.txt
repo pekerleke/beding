@@ -1,0 +1,2 @@
+name: Integrator Pro
+description: "Integrator Pro conecta múltiples sistemas y aplicaciones, asegurando una transferencia de datos fluida y segura. Su arquitectura flexible lo hace ideal para entornos que requieren integración constante y escalable." 

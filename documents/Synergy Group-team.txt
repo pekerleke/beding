@@ -1,0 +1,9 @@
+name: Synergy Group
+integrantes:
+  - Veronica Ruiz
+  - Ramiro Paredes
+  - Gabriel Nuñez
+apps:
+  - AdminPanel Elite
+  - Reporting Genius
+  - Dashboard Pro

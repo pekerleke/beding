@@ -1,0 +1,2 @@
+name: Monitor Vision
+description: "Monitor Vision ofrece una supervisión integral de sistemas y procesos, proporcionando alertas automáticas y reportes actualizados. Es ideal para detectar incidencias de forma temprana y asegurar un rendimiento óptimo." 

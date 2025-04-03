@@ -1,0 +1,2 @@
+name: Insight Reports
+description: "Insight Reports convierte grandes volúmenes de datos en informes detallados y accesibles. Con funciones avanzadas de análisis, permite identificar patrones y optimizar procesos para mejorar la eficiencia operativa." 

@@ -1,0 +1,2 @@
+name: Sistema Avanzado
+description: "Sistema Avanzado es una solución diseñada para optimizar procesos internos mediante herramientas de gestión y control que permiten una administración eficaz de recursos. Su arquitectura modular se adapta a distintas necesidades empresariales." 

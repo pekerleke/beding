@@ -1,0 +1,2 @@
+name: ReportMaster
+description: "ReportMaster transforma datos complejos en informes claros y comprensibles. La aplicación facilita el análisis de tendencias y la identificación de oportunidades, apoyando a los equipos en la toma de decisiones estratégicas." 

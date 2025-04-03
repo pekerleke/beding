@@ -1,0 +1,2 @@
+name: Integrator Prime
+description: "Integrator Prime conecta diversos sistemas y aplicaciones, asegurando un flujo continuo y seguro de información. Su arquitectura flexible se adapta a las necesidades específicas de cada empresa, mejorando la eficiencia operativa." 

@@ -1,0 +1,9 @@
+name: Data Dynamics
+integrantes:
+  - Maria López
+  - Juan Martinez
+  - Lucia Fernández
+apps:
+  - Sistema Avanzado
+  - ReportMaster
+  - Analytics X

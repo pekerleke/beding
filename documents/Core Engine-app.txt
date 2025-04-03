@@ -1,0 +1,2 @@
+name: Core Engine
+description: "Core Engine actúa como el motor central de gestión, coordinando procesos y recursos de manera eficiente. Su diseño escalable y flexible permite adaptarse a las crecientes demandas operativas de la empresa." 

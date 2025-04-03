@@ -1,0 +1,9 @@
+name: Tech Vanguard
+integrantes:
+  - Felipe Navarro
+  - Nancy Delgado
+  - Bruno Cruz
+apps:
+  - Backend Fusion
+  - Frontend Express
+  - Connector Nexus

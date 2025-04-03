@@ -1,0 +1,2 @@
+name: Executive Dashboard
+description: "Executive Dashboard ofrece una visión estratégica de los indicadores clave, facilitando el análisis en niveles directivos. Con visualizaciones interactivas, permite a los ejecutivos tomar decisiones informadas de forma ágil." 

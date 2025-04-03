@@ -1,0 +1,2 @@
+name: BackOffice Pro
+description: "BackOffice Pro es una aplicación integral para la gestión administrativa, que facilita la organización de procesos internos y el manejo eficiente de datos empresariales. Su interfaz intuitiva y herramientas de análisis permiten optimizar la productividad y la toma de decisiones." 

@@ -1,0 +1,2 @@
+name: Platform Supreme
+description: "Platform Supreme es una solución tecnológica integral que centraliza las operaciones críticas de la empresa. Su diseño robusto y escalable facilita la gestión y coordinación de procesos en un entorno dinámico." 

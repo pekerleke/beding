@@ -1,0 +1,2 @@
+name: MainApp Elite
+description: "MainApp Elite centraliza las funciones críticas de la empresa en una única interfaz, facilitando la gestión operativa diaria. Su diseño robusto y amigable ayuda a coordinar tareas y optimizar recursos en tiempo real." 
