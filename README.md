@@ -27,3 +27,7 @@ Seguí los pasos en la [Wiki de la App](https://github.com/pekerleke/semantic-se
 ## Notas
 
 Esta aplicación es solo una demo pensada para probar el potencial de la integración entre sistemas de búsqueda semántica y generación de respuestas contextualizadas con contenido propio.
+
+En este momento solo carga información sobre la organización "Sarasa Inc.", dicha información es `equipos` (nombre, participantes y aplicaciones que tienen a cargo) y `aplicaciones` (nombre y descripción), las preguntas deben ser relacionadas con esta data
+
+Se puede extender el conocimiento del chat agregando más documentos y volviendo a cargarlos en la base (se recomienda vaciar la base antes para no tener documentos duplicados)
