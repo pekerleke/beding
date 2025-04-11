@@ -28,7 +28,7 @@ export class ChatService {
     private async embed(text: string) {
         const res = await axios.post(
             'https://api.openai.com/v1/embeddings',
-            { input: text, model: 'text-embedding-ada-002' },
+            { input: text, model: 'text-embedding-3-small' },
             { headers: { Authorization: `Bearer ${this.configService.get('OPENAI_API_KEY')}` } },
         );
         const response = res.data as { data: Array<{ embedding: number[] }> };
@@ -83,7 +83,7 @@ export class ChatService {
         const response = await axios.post<any>(
             'https://api.openai.com/v1/chat/completions',
             {
-                model: 'gpt-3.5-turbo',
+                model: 'gpt-4o-mini',
                 temperature: 0.0,
                 messages,
             },
@@ -151,7 +151,7 @@ export class ChatService {
         ];
 
         const body = {
-            model: 'gpt-4',
+            model: 'gpt-4o-mini',
             max_tokens: 600,
             temperature: 0.3,
             seed: 70,

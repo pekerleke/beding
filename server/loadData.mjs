@@ -11,7 +11,7 @@ const documentsDir = path.resolve('documents');
 const embed = async (text) => {
     const res = await axios.post("https://api.openai.com/v1/embeddings", {
         input: text,
-        model: "text-embedding-ada-002"
+        model: "text-embedding-3-small"
     }, {
         headers: { Authorization: `Bearer ${OPENAI_API_KEY}` }
     });
