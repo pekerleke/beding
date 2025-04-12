@@ -1,13 +1,66 @@
+:root {
+  /* Variables para tema claro (default) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7f9;
+  --bg-tertiary: #f6f8fa;
+  --text-primary: #24292e;
+  --text-secondary: #586069;
+  --border-color: #e1e4e8;
+  --accent-color: #0366d6;
+  --hover-color: rgba(0, 0, 0, 0.05);
+  --selected-color: #d1e9ff;
+  --selected-border: #0366d6;
+  --button-primary: #2ea44f;
+  --button-primary-hover: #2c974b;
+  --shadow-color: rgba(0, 0, 0, 0.15);
+  --app-padding: 24px;
+}
+
+[data-theme='dark'] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #252525;
+  --bg-tertiary: #2d2d2d;
+  --text-primary: #e6e6e6;
+  --text-secondary: #b0b0b0;
+  --border-color: #444444;
+  --accent-color: #58a6ff;
+  --hover-color: rgba(255, 255, 255, 0.05);
+  --selected-color: #0d2845;
+  --selected-border: #58a6ff;
+  --button-primary: #238636;
+  --button-primary-hover: #2ea043;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Estilos generales de la aplicación */
+main {
+  padding: var(--app-padding);
+  min-height: 100vh;
+}
+
+button, input, textarea {
+  font-family: inherit;
 }

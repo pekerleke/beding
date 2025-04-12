@@ -6,10 +6,13 @@ async function bootstrap() {
 
     app.enableCors({
         origin: 'http://localhost:3000',
-        methods: ['GET', 'POST'],
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         allowedHeaders: ['Content-Type'],
     });
 
-    await app.listen(9290);
+    const port = 9290;
+    await app.listen(port);
+    console.log(`🚀 Servidor iniciado en http://localhost:${port}`);
+    console.log(`📝 API de asistentes disponible en http://localhost:${port}/assistants`);
 }
 void bootstrap();

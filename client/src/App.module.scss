@@ -1,5 +1,13 @@
-.title{
-    max-width: 800px;
-    margin: auto;
-    margin-block: 24px;
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--bg-secondary);
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
 }
