@@ -3,6 +3,7 @@ import axios from 'axios';
 import styles from './assistants.module.scss';
 import AssistantForm from './AssistantForm';
 import Modal from './Modal';
+import { ChatBubbleLeftRightIcon, AdjustmentsHorizontalIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 export interface AssistantFile {
     id: string;
@@ -108,7 +109,7 @@ const AssistantsList: React.FC<AssistantsListProps> = ({ onSelectAssistant, sele
                         className={styles.newAssistantButton}
                         onClick={() => handleOpenModal()}
                     >
-                        + Crear Asistente
+                        <PlusIcon width={14}/> Crear Asistente
                     </button>
                 </div>
 
@@ -138,7 +139,7 @@ const AssistantsList: React.FC<AssistantsListProps> = ({ onSelectAssistant, sele
                                                 onClick={() => handleStartChat(assistant)}
                                                 title="Iniciar chat"
                                             >
-                                                💬
+                                                <ChatBubbleLeftRightIcon />
                                             </button>
                                             <button
                                                 className={styles.editButton}
@@ -148,7 +149,7 @@ const AssistantsList: React.FC<AssistantsListProps> = ({ onSelectAssistant, sele
                                                 }}
                                                 title="Editar asistente"
                                             >
-                                                ✏️
+                                                <AdjustmentsHorizontalIcon />
                                             </button>
                                         </div>
                                     </li>

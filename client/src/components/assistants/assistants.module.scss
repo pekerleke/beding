@@ -24,17 +24,20 @@
 }
 
 .newAssistantButton {
-    background-color: var(--button-primary);
-    color: white;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
     border: none;
     border-radius: 6px;
     padding: 6px 12px;
-    font-size: 0.85rem;
+    font-size: 13px;
     cursor: pointer;
     transition: background-color 0.2s;
+    display: flex;
+    gap: 6px;
+    align-items: center;
 
     &:hover {
-        background-color: var(--button-primary-hover);
+        background-color: var(--bg-tertiary);
     }
 }
 
@@ -92,6 +95,8 @@
 
 .editButton,
 .chatButton {
+    width: 36px;
+    color: var(--text-primary);
     background: none;
     border: none;
     font-size: 1.1rem;
@@ -100,15 +105,14 @@
     border-radius: 4px;
     opacity: 0.6;
     transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
         background-color: var(--hover-color);
         opacity: 1;
     }
-}
-
-.chatButton {
-    color: var(--accent-color);
 }
 
 .mainContainer {
@@ -129,6 +133,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        h1 {
+            font-size: 24px;
+        }
     }
 }
 
@@ -201,15 +209,8 @@
     border-radius: 12px;
     border: 1px dashed var(--border-color);
 
-    h2 {
-        margin-top: 0;
-        margin-bottom: 20px;
-        color: var(--text-primary);
-        font-size: 1.8rem;
-    }
-
     p {
-        font-size: 1.1rem;
+        font-size: 14px;
         line-height: 1.5;
         color: var(--text-secondary);
     }
@@ -564,22 +565,17 @@
 }
 
 .removeFileButton {
+    width: 34px;
     background: none;
     border: none;
     color: var(--text-secondary);
-    font-size: 1.2rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    padding: 0;
     transition: all 0.2s;
 
     &:hover {
-        background-color: #ffebe9;
         color: #cf222e;
     }
 }
@@ -618,14 +614,12 @@
 }
 
 .viewFileButton {
+    width: 34px;
     background: none;
     border: none;
-    color: var(--accent-color);
+    color: var(--text-primary);
     padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.9rem;
     cursor: pointer;
-    margin-right: 10px;
 }
 
 .loading {

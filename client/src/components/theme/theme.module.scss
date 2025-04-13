@@ -3,18 +3,17 @@
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background-color 0.3s, transform 0.3s;
-    z-index: 1000;
+    color: var(--text-primary);
 
     &:hover {
-        background-color: var(--hover-color);
-        transform: scale(1.1);
+        transform: scale(1.2);
     }
 
     &:active {

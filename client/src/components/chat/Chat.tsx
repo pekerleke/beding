@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Loader } from '../loader/Loader';
 import FileContentViewer from '../assistants/FileContentViewer';
+import ReactMarkdown from 'react-markdown';
 
 import styles from "./chat.module.scss";
 
@@ -85,51 +86,51 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
     };
 
     const parseFileSource = (source: string): SourceInfo | null => {
-        
+
         // Diferentes formatos posibles
         // 1. "Archivo: nombre_archivo.txt"
         if (source.startsWith('Archivo:')) {
             const fileName = source.replace('Archivo:', '').trim();
             return { fileName, fileId: extractFileId(fileName) };
         }
-        
+
         // 2. Nombre del archivo directo (ej: "archivo.txt")
         if (source.endsWith('.txt') || source.includes('.')) {
             return { fileName: source, fileId: extractFileId(source) };
         }
-        
+
         // 3. Intentar extraer un ID de archivo si está presente en la cadena
         const fileIdMatch = extractFileId(source);
         if (fileIdMatch !== `unknown-${Date.now()}`) {
             return { fileName: source, fileId: fileIdMatch };
         }
-        
+
         return null;
     };
 
     const extractFileId = (source: string): string => {
-        
+
         // 1. Comprobar si hay un patrón claro de file-ID
         const fileIdPattern = /file-[\w-]+/;
         const match = source.match(fileIdPattern);
         if (match) {
             return match[0];
         }
-        
+
         // 2. Si la fuente ya tiene un formato que parece un ID UUID, usar eso
         const uuidPattern = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
         const uuidMatch = source.match(uuidPattern);
         if (uuidMatch) {
             return uuidMatch[0];
         }
-        
+
         // 3. Crear un ID genérico con un timestamp para garantizar unicidad
         const unknownId = `unknown-${Date.now()}`;
         return unknownId;
     };
 
     const handleSourceClick = async (source: string) => {
-        
+
         const sourceInfo = parseFileSource(source);
 
         if (sourceInfo) {
@@ -141,20 +142,20 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
                         const filesResponse = await axios.get<AssistantFile[]>(
                             `http://localhost:9290/assistants/${assistantId}/files`
                         );
-                        
+
                         const files = filesResponse.data;
-                        
+
                         // Buscar el archivo por nombre exacto
                         let matchingFile = files.find(file => file.name === sourceInfo.fileName);
-                        
+
                         // Si no hay coincidencia exacta, buscar por nombre parcial
                         if (!matchingFile) {
-                            matchingFile = files.find(file => 
-                                sourceInfo.fileName.includes(file.name) || 
+                            matchingFile = files.find(file =>
+                                sourceInfo.fileName.includes(file.name) ||
                                 file.name.includes(sourceInfo.fileName)
                             );
                         }
-                        
+
                         if (matchingFile) {
                             sourceInfo.fileId = matchingFile.id;
                             sourceInfo.fileName = matchingFile.name; // Actualizar también el nombre
@@ -166,7 +167,7 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
                         return;
                     }
                 }
-                
+
                 setViewingSource(sourceInfo);
             } catch (error) {
                 console.error('Error general al procesar la fuente:', error);
@@ -186,13 +187,15 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
                         key={index}
                         className={`${styles.message} ${message.isUser ? styles.userMessage : styles.aiMessage}`}
                     >
-                        {message.text}
+                        <ReactMarkdown>
+                            {message.text}
+                        </ReactMarkdown>
                         {!message.isUser && index === messages.length - 1 && resources.length > 0 && (
                             <div className={styles.sourceContainer}>
                                 Fuentes: {resources.map((source, index) => (
                                     <React.Fragment key={index}>
-                                        <span 
-                                            className={styles.sourceLink} 
+                                        <span
+                                            className={styles.sourceLink}
                                             onClick={() => handleSourceClick(source)}
                                         >
                                             {source}
