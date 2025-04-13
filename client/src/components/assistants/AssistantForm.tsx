@@ -329,7 +329,6 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                 <div className={styles.formGroup}>
                     <label>Archivos</label>
                     {assistant ? (
-                        // Mostrar archivos existentes para un asistente que se está editando
                         <>
                             {files.length > 0 ? (
                                 <div className={styles.filesList}>
@@ -343,7 +342,6 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                                                     className={styles.viewFileButton}
                                                     title="Ver contenido"
                                                 >
-                                                    {/* 👁️ */}
                                                     <BookOpenIcon />
                                                 </button>
                                                 <button
