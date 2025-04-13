@@ -1,9 +1,10 @@
-# Semantic Search Chat Demo
+# Beding
 
-Semantic Search Chat Demo es una aplicación demo de chat que te permite cargar documentos en Weaviate para obtener contexto tipo RAG. La app utiliza técnicas como la condensación de consultas, generación de embeddings, RAG y se utiliza la api de OpenAI para generar respuestas basadas en el contexto.
+Beding es una plataforma que permite crear múltiples asistentes con contexto personalizado y acceder a ellos via API. Esta herramienta facilita la integración de asistentes inteligentes en diversas aplicaciones y servicios.​
 
-<img width="862" alt="Screenshot 2025-04-03 at 12 24 24" src="https://github.com/user-attachments/assets/a5920da5-f479-4a93-9cc5-6ee2491c9650" />
+La aplicación de demostración de chat de Beding permite cargar documentos en Weaviate para obtener contexto tipo RAG (Retrieval-Augmented Generation). Utiliza técnicas como condensación de consultas, generación de embeddings y recuperación de información para generar respuestas contextuales mediante la API de OpenAI.
 
+<img width="1216" alt="Screenshot 2025-04-13 at 17 47 34" src="https://github.com/user-attachments/assets/f4246482-1fc0-4ed2-967b-447e81bae17f" />
 
 ## Características
 
@@ -13,6 +14,10 @@ Semantic Search Chat Demo es una aplicación demo de chat que te permite cargar 
 - **Condensación de consultas:** Optimiza las consultas para obtener respuestas más precisas.
 - **Embeddings:** Convierte el texto en representaciones vectoriales.
 - **Integración con OpenAI:** Se conecta a OpenAI para generar respuestas más naturales y acertadas.
+
+<img width="1216" alt="Screenshot 2025-04-13 at 17 47 45" src="https://github.com/user-attachments/assets/dc5dde27-2f1c-4754-96e1-ca8927012051" />
+<img width="1216" alt="Screenshot 2025-04-13 at 17 47 58" src="https://github.com/user-attachments/assets/cb495c71-aace-4ae7-a30e-c45a004b8b07" />
+
 
 ## Requisitos
 
