@@ -3,7 +3,7 @@ integrantes:
   - Veronica Ruiz
   - Ramiro Paredes
   - Gabriel Nuñez
+team-lead: Gabriel Nuñez
 apps:
   - AdminPanel Elite
-  - Reporting Genius
-  - Dashboard Pro
+  - Reporting Genius  - Dashboard Pro

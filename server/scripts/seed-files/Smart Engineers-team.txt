@@ -3,6 +3,7 @@ integrantes:
   - Antonio Garcia
   - Sofia Morales
   - Miguel Sanchez
+team-lead: Antonio Garcia
 apps:
   - MainApp Elite
   - Monitor Vision

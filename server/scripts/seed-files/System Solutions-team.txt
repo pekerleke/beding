@@ -3,6 +3,7 @@ integrantes:
   - Andres Diaz
   - Sofia Ramirez
   - Fernando Castro
+team-lead: Sofia Ramirez
 apps:
   - Gestor Integral
   - Monitor Max

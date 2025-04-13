@@ -3,7 +3,7 @@ integrantes:
   - Jorge Castillo
   - Alicia Rivera
   - Patricia Solis
+team-lead: Patricia Solis
 apps:
   - Core Engine
-  - Executive Dashboard
-  - Service Manager
+  - Executive Dashboard  - Service Manager

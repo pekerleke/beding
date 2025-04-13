@@ -1,0 +1,11 @@
+teams:
+  - Tech Vanguard
+  - Tech Innovators
+  - System Solutions
+  - Synergy Group
+  - Smart Engineers
+  - Innovative Minds
+  - Future Systems
+  - Digital Pioneers
+  - Data Dynamics
+  - Creative Coders 

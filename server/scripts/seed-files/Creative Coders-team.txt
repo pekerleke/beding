@@ -7,3 +7,4 @@ apps:
   - Admin Central
   - Visual Dashboard
   - Integrator Pro
+team-lead: Diego Rojas
