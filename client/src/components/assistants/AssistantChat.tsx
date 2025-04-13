@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AssistantsList, { Assistant } from './AssistantsList';
 import Chat from '../chat/Chat';
 import styles from './assistants.module.scss';
+import ThemeToggle from '../theme/ThemeToggle';
 
 const AssistantChat: React.FC = () => {
     const [selectedAssistant, setSelectedAssistant] = useState<Assistant | null>(null);
@@ -12,10 +13,16 @@ const AssistantChat: React.FC = () => {
 
     return (
         <div className={styles.mainContainer}>
-            <AssistantsList
-                onSelectAssistant={handleSelectAssistant}
-                selectedAssistantId={selectedAssistant?.id || null}
-            />
+            <div className={styles.assistantsContainer}>
+                <div className={styles.title}>
+                    <h1>🤖 Beding</h1>
+                    <ThemeToggle />
+                </div>
+                <AssistantsList
+                    onSelectAssistant={handleSelectAssistant}
+                    selectedAssistantId={selectedAssistant?.id || null}
+                />
+            </div>
             <div className={styles.chatContainer}>
                 {selectedAssistant ? (
                     <>
@@ -31,7 +38,6 @@ const AssistantChat: React.FC = () => {
                 ) : (
                     <div className={styles.emptyState}>
                         <div className={styles.welcomeMessage}>
-                            <h2>Bienvenido a Beding</h2>
                             <p>Selecciona un asistente de la lista o crea uno nuevo para comenzar a chatear.</p>
                             <p>Cada asistente puede ser personalizado con instrucciones específicas y contenido de referencia.</p>
                         </div>

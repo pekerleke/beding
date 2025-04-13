@@ -1,10 +1,7 @@
 .assistantsList {
     width: 400px;
-    padding: 16px;
-    background-color: var(--bg-secondary);
-    height: 100%;
     overflow-y: auto;
-    border-radius: 10px;
+    padding-inline: 16px;
 
     h2 {
         margin: 0;
@@ -50,24 +47,30 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: 1px solid var(--bg-tertiary);
 
     &:hover {
         background-color: var(--hover-color);
     }
 
     &.selected {
-        background-color: var(--border-color);
-        // border-left: 3px solid var(--selected-border);
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
     }
 
     .assistantInfo {
         flex: 1;
+        min-width: 0;
+        margin-right: 10px;
 
         h3 {
             margin: 0 0 4px 0;
             font-size: 1rem;
             font-weight: 600;
             color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         p {
@@ -84,6 +87,7 @@
 .assistantActions {
     display: flex;
     gap: 5px;
+    flex-shrink: 0;
 }
 
 .editButton,
@@ -105,17 +109,27 @@
 
 .chatButton {
     color: var(--accent-color);
-
-    &:hover {
-        background-color: rgba(3, 102, 214, 0.1);
-    }
 }
 
 .mainContainer {
     display: flex;
-    height: calc(100vh - 80px);
+    height: 100vh;
     width: 100%;
     background-color: var(--bg-primary);
+
+    .assistantsContainer {
+        border-right: 1px solid var(--border-color);
+    }
+
+    .title {
+        margin: 0px;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 10px;
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
 
 .chatContainer {
@@ -123,16 +137,12 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background-color: var(--bg-primary);
     border-radius: 10px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-    margin-left: 16px;
 }
 
 .chatHeader {
     padding: 20px 24px;
     border-bottom: 1px solid var(--border-color);
-    background-color: var(--bg-secondary);
 
     h2 {
         margin: 0 0 4px 0;
@@ -272,11 +282,11 @@
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s;
-    
+
     &:hover:not(:disabled) {
         background-color: rgba(33, 136, 255, 0.1);
     }
-    
+
     &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
@@ -360,7 +370,6 @@
     font-size: 0.9rem;
 }
 
-/* Estilos para el componente de configuración del asistente */
 .settingsContainer {
     padding: 20px;
     max-width: 800px;
@@ -535,8 +544,7 @@
     cursor: pointer;
     transition: background-color 0.2s;
     margin-bottom: 0 !important;
-    display: flex !important
-;
+    display: flex !important;
     align-items: center;
 
     &:hover:not(:disabled) {
@@ -618,10 +626,6 @@
     font-size: 0.9rem;
     cursor: pointer;
     margin-right: 10px;
-
-    &:hover {
-        background-color: rgba(3, 102, 214, 0.1);
-    }
 }
 
 .loading {
@@ -632,76 +636,75 @@
     color: var(--text-secondary);
 }
 
-// API Examples Modal styles
 .apiExamplesContainer {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .apiTabs {
-  display: flex;
-  margin-bottom: 16px;
-  border-bottom: 1px solid var(--border-color);
+    display: flex;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .apiTabButton {
-  padding: 10px 16px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  transition: all 0.2s;
-  position: relative;
-  
-  &:hover {
-    color: var(--text-primary);
-  }
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    position: relative;
+
+    &:hover {
+        color: var(--text-primary);
+    }
 }
 
 .apiTabActive {
-  color: var(--accent-color);
-  font-weight: 500;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--accent-color);
-  }
+    color: var(--accent-color);
+    font-weight: 500;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--accent-color);
+    }
 }
 
 .apiExampleContent {
-  h3 {
-    margin-top: 0;
-    font-size: 1.2rem;
-  }
-  
-  h4 {
-    margin: 20px 0 10px;
-    font-size: 1rem;
-    color: var(--text-secondary);
-  }
-  
-  p {
-    margin-bottom: 16px;
-    line-height: 1.5;
-  }
+    h3 {
+        margin-top: 0;
+        font-size: 1.2rem;
+    }
+
+    h4 {
+        margin: 20px 0 10px;
+        font-size: 1rem;
+        color: var(--text-secondary);
+    }
+
+    p {
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
 }
 
 .codeBlock {
-  background-color: var(--bg-tertiary);
-  padding: 16px;
-  border-radius: 6px;
-  overflow-x: auto;
-  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--text-primary);
-  white-space: pre-wrap;
-  word-break: break-word;
+    background-color: var(--bg-tertiary);
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-word;
 }

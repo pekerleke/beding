@@ -8,12 +8,12 @@ function App() {
     return (
         <ThemeProvider>
             <main className={styles.mainContainer}>
-                <div className={styles.title}>
+                {/* <div className={styles.title}>
                     <h1 style={{ margin: 0 }}>🤖 Beding</h1>
                     <small>OpenAi Embeddings + OpenAi api + Weaviate</small>
-                </div>
+                </div> */}
                 <AssistantChat />
-                <ThemeToggle />
+                {/* <ThemeToggle /> */}
             </main>
         </ThemeProvider>
     );
