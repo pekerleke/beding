@@ -13,7 +13,6 @@
   --button-primary: #2ea44f;
   --button-primary-hover: #2c974b;
   --shadow-color: rgba(0, 0, 0, 0.15);
-  --app-padding: 24px;
 }
 
 [data-theme='dark'] {
@@ -57,7 +56,6 @@ code {
 
 /* Estilos generales de la aplicación */
 main {
-  padding: var(--app-padding);
   min-height: 100vh;
 }
 

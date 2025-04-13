@@ -3,6 +3,7 @@ integrantes:
   - Julia Bravo
   - Pedro Alvarado
   - Manuel Cortes
+team-lead: Pedro Alvarado
 apps:
   - Platform Supreme
   - Analytics Quantum

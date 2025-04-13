@@ -3,6 +3,7 @@ integrantes:
   - Pepito Perez
   - Josesito Rodriguez
   - Oscar Garcia
+team-lead: Oscar Garcia
 apps:
   - BackOffice Pro
   - Data Dashboard

@@ -7,3 +7,4 @@ apps:
   - Sistema Avanzado
   - ReportMaster
   - Analytics X
+team-lead: Juan Martinez

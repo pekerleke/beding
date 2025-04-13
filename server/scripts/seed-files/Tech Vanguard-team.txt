@@ -3,6 +3,7 @@ integrantes:
   - Felipe Navarro
   - Nancy Delgado
   - Bruno Cruz
+team-lead: Felipe Navarro
 apps:
   - Backend Fusion
   - Frontend Express

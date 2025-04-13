@@ -4,6 +4,7 @@ import styles from './assistants.module.scss';
 import { Assistant, AssistantFile } from './AssistantsList';
 import FileContentViewer from './FileContentViewer';
 import APIExamplesModal from './APIExamplesModal';
+import { BookOpenIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 interface AssistantFormProps {
     assistant: Assistant | null;
@@ -328,7 +329,6 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                 <div className={styles.formGroup}>
                     <label>Archivos</label>
                     {assistant ? (
-                        // Mostrar archivos existentes para un asistente que se está editando
                         <>
                             {files.length > 0 ? (
                                 <div className={styles.filesList}>
@@ -342,11 +342,8 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                                                     className={styles.viewFileButton}
                                                     title="Ver contenido"
                                                 >
-                                                    👁️
+                                                    <BookOpenIcon />
                                                 </button>
-                                                <span className={styles.fileSize}>
-                                                    {(file.size / 1024).toFixed(1)} KB
-                                                </span>
                                                 <button
                                                     type="button"
                                                     onClick={() => handleRemoveFile(file.id)}
@@ -354,7 +351,7 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                                                     title="Eliminar archivo"
                                                     disabled={isSubmitting}
                                                 >
-                                                    ×
+                                                    <TrashIcon />
                                                 </button>
                                             </div>
                                         </div>
