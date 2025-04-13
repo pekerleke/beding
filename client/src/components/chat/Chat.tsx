@@ -34,12 +34,10 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
     const [inputMessage, setInputMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const conversationId = useRef<string>(Date.now().toString());
-    // const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState<"loading" | "error" | "success">();
     const [resources, setResources] = useState<string[]>([]);
     const [viewingSource, setViewingSource] = useState<SourceInfo | null>(null);
 
-    // Limpiar el chat cuando se cambia de asistente
     useEffect(() => {
         setMessages([]);
         setResources([]);
@@ -66,7 +64,6 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
         setInputMessage('');
 
         try {
-            // setIsLoading(true);
             setStatus("loading");
             const response = await axios.post<ChatResponse>('http://localhost:9290/chat', {
                 question: inputMessage,
@@ -80,51 +77,42 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
                 isUser: false,
             };
             setMessages(prev => [...prev, responseMessage]);
-            // setIsLoading(false);
             setStatus("success");
         } catch (error) {
-            // setIsLoading(false);
             setStatus("error");
             console.error('Error sending message:', error);
         }
     };
 
     const parseFileSource = (source: string): SourceInfo | null => {
-        console.log('Analizando fuente:', source);
         
         // Diferentes formatos posibles
         // 1. "Archivo: nombre_archivo.txt"
         if (source.startsWith('Archivo:')) {
             const fileName = source.replace('Archivo:', '').trim();
-            console.log('Formato 1 detectado, fileName:', fileName);
             return { fileName, fileId: extractFileId(fileName) };
         }
         
         // 2. Nombre del archivo directo (ej: "archivo.txt")
         if (source.endsWith('.txt') || source.includes('.')) {
-            console.log('Formato 2 detectado, fileName:', source);
             return { fileName: source, fileId: extractFileId(source) };
         }
         
         // 3. Intentar extraer un ID de archivo si está presente en la cadena
         const fileIdMatch = extractFileId(source);
         if (fileIdMatch !== `unknown-${Date.now()}`) {
-            console.log('Formato 3 detectado, ID encontrado:', fileIdMatch);
             return { fileName: source, fileId: fileIdMatch };
         }
         
-        console.log('No se pudo determinar el formato de la fuente:', source);
         return null;
     };
 
     const extractFileId = (source: string): string => {
-        console.log('Extrayendo fileId de:', source);
         
         // 1. Comprobar si hay un patrón claro de file-ID
         const fileIdPattern = /file-[\w-]+/;
         const match = source.match(fileIdPattern);
         if (match) {
-            console.log('ID encontrado por patrón file-*:', match[0]);
             return match[0];
         }
         
@@ -132,33 +120,27 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
         const uuidPattern = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
         const uuidMatch = source.match(uuidPattern);
         if (uuidMatch) {
-            console.log('UUID encontrado:', uuidMatch[0]);
             return uuidMatch[0];
         }
         
         // 3. Crear un ID genérico con un timestamp para garantizar unicidad
         const unknownId = `unknown-${Date.now()}`;
-        console.log('Usando ID genérico:', unknownId);
         return unknownId;
     };
 
     const handleSourceClick = async (source: string) => {
-        console.log('Clickeada la fuente:', source);
         
         const sourceInfo = parseFileSource(source);
-        console.log('Información de fuente extraída:', sourceInfo);
 
         if (sourceInfo) {
             try {
                 // Si el fileId es "unknown", intentamos encontrarlo consultando al backend
                 if (sourceInfo.fileId.startsWith('unknown')) {
-                    console.log('ID desconocido, buscando archivo por nombre...');
                     try {
                         // Obtener la lista de archivos del asistente
                         const filesResponse = await axios.get<AssistantFile[]>(
                             `http://localhost:9290/assistants/${assistantId}/files`
                         );
-                        console.log('Archivos disponibles:', filesResponse.data);
                         
                         const files = filesResponse.data;
                         
@@ -167,7 +149,6 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
                         
                         // Si no hay coincidencia exacta, buscar por nombre parcial
                         if (!matchingFile) {
-                            console.log('No se encontró coincidencia exacta, buscando coincidencia parcial...');
                             matchingFile = files.find(file => 
                                 sourceInfo.fileName.includes(file.name) || 
                                 file.name.includes(sourceInfo.fileName)
@@ -175,12 +156,9 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
                         }
                         
                         if (matchingFile) {
-                            console.log('Archivo encontrado:', matchingFile);
                             sourceInfo.fileId = matchingFile.id;
                             sourceInfo.fileName = matchingFile.name; // Actualizar también el nombre
                         } else {
-                            console.error('No se pudo encontrar un archivo que coincida con:', sourceInfo.fileName);
-                            console.error('Archivos disponibles:', files.map(f => f.name).join(', '));
                             return;
                         }
                     } catch (error) {
@@ -189,13 +167,10 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
                     }
                 }
                 
-                console.log('Mostrando contenido del archivo:', sourceInfo);
                 setViewingSource(sourceInfo);
             } catch (error) {
                 console.error('Error general al procesar la fuente:', error);
             }
-        } else {
-            console.log('Fuente no reconocida como archivo:', source);
         }
     };
 
@@ -203,49 +178,34 @@ const Chat: React.FC<ChatProps> = ({ assistantId }) => {
         setViewingSource(null);
     };
 
-    // const handleNewChat = () => {
-    //     setMessages([]);
-    //     setResources([]);
-    //     setStatus(undefined);
-    //     conversationId.current = `${assistantId}-${Date.now().toString()}`;
-    // };
-
     return (
         <div className={styles.container}>
             <div className={styles.messagesArea}>
-                {/* <div className={styles.chatHeader}>
-                    <button 
-                        onClick={handleNewChat} 
-                        className={styles.newChatButton}
-                    >
-                        Nuevo Chat
-                    </button>
-                </div> */}
                 {messages.map((message, index) => (
                     <div
                         key={index}
                         className={`${styles.message} ${message.isUser ? styles.userMessage : styles.aiMessage}`}
                     >
                         {message.text}
+                        {!message.isUser && index === messages.length - 1 && resources.length > 0 && (
+                            <div className={styles.sourceContainer}>
+                                Fuentes: {resources.map((source, index) => (
+                                    <React.Fragment key={index}>
+                                        <span 
+                                            className={styles.sourceLink} 
+                                            onClick={() => handleSourceClick(source)}
+                                        >
+                                            {source}
+                                        </span>
+                                        {index < resources.length - 1 && ", "}
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
                 {status === "loading" && <Loader />}
-                {(status === "success" && Boolean(resources?.length)) && (
-                    <div className={styles.sourceContainer}>
-                        Fuentes: {resources.map((source, index) => (
-                            <React.Fragment key={index}>
-                                <span 
-                                    className={styles.sourceLink} 
-                                    onClick={() => handleSourceClick(source)}
-                                >
-                                    {source}
-                                </span>
-                                {index < resources.length - 1 && ", "}
-                            </React.Fragment>
-                        ))}
-                    </div>
-                )}
                 {status === "error" && <div>Ups algo salio mal</div>}
             </div>
             <form onSubmit={handleSubmit} className={styles.inputForm}>

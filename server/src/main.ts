@@ -12,7 +12,7 @@ async function bootstrap() {
 
     const port = 9290;
     await app.listen(port);
-    console.log(`🚀 Servidor iniciado en http://localhost:${port}`);
-    console.log(`📝 API de asistentes disponible en http://localhost:${port}/assistants`);
+    console.info(`🚀 Server running on http://localhost:${port}`);
+    console.info(`📝 API of assistants available at http://localhost:${port}/assistants`);
 }
 void bootstrap();

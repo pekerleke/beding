@@ -71,24 +71,49 @@ interface WeaviateGraphQLResponse {
     };
 }
 
+interface WeaviateFileObject {
+    fileName: string;
+    fileId: string;
+    _additional: {
+        id: string;
+    };
+}
+
+interface WeaviateFileQueryResponse {
+    data?: { 
+        Get?: Record<string, WeaviateFileObject[]> 
+    };
+}
+
+interface SearchResult {
+    fileName: string;
+    fileId: string;
+    content: string;
+    _additional?: {
+        id: string;
+        certainty?: number;
+    };
+}
+
+interface FileContentObject {
+    content: string;
+}
+
 @Injectable()
 export class AssistantsService {
     private readonly ASSISTANT_CLASS_NAME = 'Assistant';
     private readonly UPLOADS_DIR = path.join(process.cwd(), 'uploads');
 
     constructor(private configService: ConfigService) {
-        // Asegurarse de que la clase Assistant existe en Weaviate
         void this.initializeWeaviateSchema();
-        // Crear directorio para subidas si no existe
         void this.createUploadsDirectory();
     }
 
     private async createUploadsDirectory() {
         try {
             await fs.mkdir(this.UPLOADS_DIR, { recursive: true });
-            console.log('✓ Directorio de subidas creado correctamente');
         } catch (error) {
-            console.error('❌ Error al crear directorio de subidas:', error);
+            console.error('Error creating uploads directory:', error);
         }
     }
 
@@ -213,7 +238,7 @@ export class AssistantsService {
                 },
             );
 
-            console.log(response.data);
+            console.info(response.data);
             const graphQLData = response.data as unknown as WeaviateGraphQLResponse;
             const weaviateAssistants = graphQLData.data?.Get?.[this.ASSISTANT_CLASS_NAME] || [];
             
@@ -287,12 +312,12 @@ export class AssistantsService {
                     }
                 );
                 
-                const filesData = filesResponse.data as { data?: { Get?: Record<string, any[]> } } | undefined;
+                const filesData = filesResponse.data as WeaviateFileQueryResponse | undefined;
                 const fileObjects = filesData?.data?.Get?.[className] || [];
                 
                 if (fileObjects.length > 0) {
                     // Crear una lista de archivos con IDs correctos desde Weaviate
-                    const updatedFiles: AssistantFile[] = fileObjects.map(obj => ({
+                    const updatedFiles: AssistantFile[] = fileObjects.map((obj: WeaviateFileObject) => ({
                         id: obj.fileId || `file-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
                         name: obj.fileName,
                         size: 0,
@@ -413,19 +438,18 @@ export class AssistantsService {
                     // Verificar si el archivo ya existe antes de intentar escribirlo
                     try {
                         await fs.access(filePath);
-                        console.log(`El archivo ${file.name} ya existe en ${filePath}`);
+                        console.info(`The file ${file.name} already exists in ${filePath}`);
                     } catch {
-                        // Si el archivo no existe, crearlo
                         await fs.writeFile(filePath, contentToUse);
-                        console.log(`Archivo ${file.name} guardado en ${filePath}`);
+                        console.info(`File ${file.name} saved in ${filePath}`);
                     }
                 } catch (writeError) {
-                    console.error(`Error al guardar el archivo ${file.id}:`, writeError);
+                    console.error(`Error saving file ${file.id}:`, writeError);
                 }
             }
 
             // Crear embedding para el archivo
-            console.log(`Creando embedding para archivo ${file.name} con contenido de ${contentToUse.length} caracteres`);
+            console.info(`Creating embedding for file ${file.name} with content of ${contentToUse.length} characters`);
             const embedding = await this.createEmbedding(contentToUse);
             
             // Guardar el embedding en la clase específica del asistente
@@ -456,31 +480,29 @@ export class AssistantsService {
 
     async removeFile(assistantId: string, fileId: string): Promise<Assistant | undefined> {
         try {
-            console.log(`Inicio de removeFile - ID Asistente: ${assistantId}, ID Archivo: ${fileId}`);
-            
             const assistant = await this.findOne(assistantId);
             if (!assistant || !assistant.files) {
-                console.log('Asistente no encontrado o no tiene archivos');
+                console.error('Assistant not found or has no files');
                 return undefined;
             }
             
-            console.log('Archivos del asistente antes de eliminar:', assistant.files);
+            console.info('Files before removing file', assistant.files);
             
             // Encontrar el archivo y eliminarlo de la lista
             const fileToRemove = assistant.files.find(f => f.id === fileId);
             if (!fileToRemove) {
-                console.log(`Archivo ${fileId} no encontrado en el asistente`);
+                console.info(`File ${fileId} not found in assistant`);
                 return assistant; // El archivo no existe, devolver asistente sin cambios
             }
             
-            console.log(`Archivo encontrado para eliminar: ${JSON.stringify(fileToRemove)}`);
+            console.info(`File found to remove: ${JSON.stringify(fileToRemove)}`);
             
             // Actualizar la lista de archivos
             assistant.files = assistant.files.filter(f => f.id !== fileId);
             const fileNames = assistant.files.map(f => f.name);
             
-            console.log('Lista de archivos actualizada:', assistant.files);
-            console.log('Nombres de archivos para actualizar en Weaviate:', fileNames);
+            console.info('Updated files list:', assistant.files);
+            console.info('File names to update in Weaviate:', fileNames);
             
             // Actualizar en Weaviate
             try {
@@ -492,32 +514,31 @@ export class AssistantsService {
                         },
                     },
                 );
-                console.log('Objeto de asistente actualizado en Weaviate');
+                console.info('Assistant object updated in Weaviate');
             } catch (updateError) {
-                console.error('Error al actualizar asistente en Weaviate:', updateError);
+                console.error('Error updating assistant in Weaviate:', updateError);
                 throw updateError;
             }
             
             // Eliminar el archivo físico
             try {
                 const filePath = path.join(this.UPLOADS_DIR, fileId);
-                console.log(`Intentando eliminar archivo físico en: ${filePath}`);
+                console.info(`Attempting to delete physical file in: ${filePath}`);
                 await fs.unlink(filePath);
-                console.log(`Archivo físico eliminado: ${filePath}`);
+                console.info(`Physical file deleted: ${filePath}`);
             } catch (fileError) {
-                console.error(`Error al eliminar archivo físico ${fileId}:`, fileError);
-                // Continuar aunque falle la eliminación física
+                console.error(`Error deleting physical file ${fileId}:`, fileError);
             }
             
             // Eliminar el embedding del archivo
             try {
                 await this.deleteFileEmbedding(assistantId, fileId);
-                console.log('Embedding del archivo eliminado correctamente');
+                console.info('File embedding deleted correctly');
             } catch (embeddingError) {
-                console.error('Error al eliminar embedding:', embeddingError);
+                console.error('Error deleting embedding:', embeddingError);
             }
             
-            console.log('Eliminación de archivo completada con éxito');
+            console.info('File deletion completed successfully');
             return assistant;
         } catch (error) {
             console.error(`Error removing file from assistant ${assistantId}:`, error);
@@ -577,11 +598,11 @@ export class AssistantsService {
             // Verificar si la clase ya existe
             try {
                 await axios.get(`${this.configService.get('WEAVIATE_HOST')}/v1/schema/${className}`);
-                console.log(`La clase ${className} ya existe`);
+                console.info(`The class ${className} already exists`);
                 return; // Si la clase ya existe, no hacer nada
-            } catch (error) {
+            } catch {
                 // La clase no existe, continuamos para crearla
-                console.log(`Creando nueva clase ${className}`);
+                console.info(`Creating new class ${className}`);
             }
             
             // Crear la clase específica para los archivos de este asistente
@@ -599,9 +620,9 @@ export class AssistantsService {
                 }
             );
             
-            console.log(`✓ Clase ${className} creada correctamente`);
+            console.info(`Class ${className} created correctly`);
         } catch (error) {
-            console.error(`❌ Error creating schema for assistant ${assistantId}:`, error);
+            console.error(`Error creating schema for assistant ${assistantId}:`, error);
             throw error;
         }
     }
@@ -621,9 +642,12 @@ export class AssistantsService {
                 }
             );
             
-            return response.data.data[0].embedding;
+            // Use type assertion to specify the response structure
+            const responseData = response.data as { data: { embedding: number[] }[] };
+            const embedding = responseData.data[0].embedding;
+            return embedding;
         } catch (error) {
-            console.error('❌ Error creating embedding:', error);
+            console.error('Error creating embedding:', error);
             throw error;
         }
     }
@@ -650,9 +674,9 @@ export class AssistantsService {
                 }
             );
             
-            console.log(`✓ Embedding guardado para archivo ${file.name}`);
+            console.info(`Embedding saved for file ${file.name}`);
         } catch (error) {
-            console.error(`❌ Error saving embedding for file ${file.name}:`, error);
+            console.error(`Error saving embedding for file ${file.name}:`, error);
             throw error;
         }
     }
@@ -660,10 +684,10 @@ export class AssistantsService {
     private async deleteFileEmbedding(assistantId: string, fileId: string): Promise<void> {
         try {
             const className = this.getAssistantFileClassName(assistantId);
-            console.log(`Intentando eliminar embedding para el archivo ${fileId} en la clase ${className}`);
+            console.info(`Attempting to delete embedding for file ${fileId} in class ${className}`);
             
             // Buscar el objeto con el fileId correspondiente
-            console.log(`Ejecutando consulta para buscar objetos con fileId=${fileId}`);
+            console.info(`Executing query to search objects with fileId=${fileId}`);
             const response = await axios.post(
                 `${this.configService.get('WEAVIATE_HOST')}/v1/graphql`,
                 {
@@ -684,39 +708,46 @@ export class AssistantsService {
             );
             
             // Extraer ID del objeto y eliminarlo
-            const responseData = response.data as { data?: { Get?: Record<string, any[]> } } | undefined;
+            const responseData = response.data as WeaviateFileQueryResponse | undefined;
             const objects = responseData?.data?.Get?.[className] || [];
             
-            console.log(`Se encontraron ${objects.length} objetos con fileId=${fileId}`);
+            console.info(`Found ${objects.length} objects with fileId=${fileId}`);
             
             if (objects.length > 0) {
                 for (const obj of objects) {
-                    const objectId = obj._additional.id;
-                    console.log(`Eliminando objeto con ID: ${objectId}`);
+                    const objWithAdditional = obj;
+                    const objectId = objWithAdditional._additional.id;
+                    console.info(`Deleting object with ID: ${objectId}`);
                     
                     try {
                         await axios.delete(
                             `${this.configService.get('WEAVIATE_HOST')}/v1/objects/${className}/${objectId}`
                         );
-                        console.log(`✓ Embedding eliminado para archivo ${fileId}, objeto ${objectId}`);
-                    } catch (deleteError: any) {
-                        console.error(`Error al eliminar objeto ${objectId}:`, deleteError.message);
-                        console.error('Detalles:', deleteError.response?.data);
+                        console.info(`Embedding deleted for file ${fileId}, object ${objectId}`);
+                    } catch (deleteError: unknown) {
+                        const err = deleteError as Error;
+                        console.error(`Error deleting object ${objectId}:`, err.message);
+                        const errWithResponse = deleteError as { response?: { data: unknown } };
+                        if (errWithResponse.response) {
+                            console.error('Details:', errWithResponse.response.data);
+                        }
                     }
                 }
             } else {
-                console.log(`⚠️ No se encontraron embeddings para el archivo ${fileId}`);
+                console.info(`⚠️ No embeddings found for file ${fileId}`);
             }
-        } catch (error: any) {
-            console.error(`❌ Error al buscar/eliminar embeddings para archivo ${fileId}:`, error.message);
-            if (error.response) {
-                console.error('Detalles de la respuesta:', error.response.data);
+        } catch (error: unknown) {
+            const err = error as Error;
+            console.error(`Error searching/deleting embeddings for file ${fileId}:`, err.message);
+            const errWithResponse = error as { response?: { data: unknown } };
+            if (errWithResponse.response) {
+                console.error('Response details:', errWithResponse.response.data);
             }
         }
     }
     
     // Método para buscar en los archivos de un asistente específico
-    async searchInAssistantFiles(assistantId: string, query: string): Promise<any[]> {
+    async searchInAssistantFiles(assistantId: string, query: string): Promise<SearchResult[]> {
         try {
             // Primero crear el embedding de la consulta
             const queryEmbedding = await this.createEmbedding(query);
@@ -749,9 +780,19 @@ export class AssistantsService {
                 }
             );
             
-            return response.data?.data?.Get?.[className] || [];
+            // Add type for the response data
+            interface SearchResponse {
+                data: {
+                    Get: {
+                        [key: string]: SearchResult[];
+                    };
+                };
+            }
+            
+            const searchData = response.data as SearchResponse;
+            return searchData?.data?.Get?.[className] || [];
         } catch (error) {
-            console.error(`❌ Error searching in assistant ${assistantId} files:`, error);
+            console.error(`Error searching in assistant ${assistantId} files:`, error);
             return [];
         }
     }
@@ -786,9 +827,9 @@ export class AssistantsService {
                 await axios.delete(
                     `${this.configService.get('WEAVIATE_HOST')}/v1/schema/${className}`
                 );
-                console.log(`✓ Clase ${className} eliminada correctamente`);
+                console.info(`Class ${className} deleted correctly`);
             } catch (error) {
-                console.error(`❌ Error deleting schema for assistant ${id}:`, error);
+                console.error(`Error deleting schema for assistant ${id}:`, error);
                 // Continuar aunque falle la eliminación del esquema
             }
 
@@ -799,7 +840,7 @@ export class AssistantsService {
 
             return true;
         } catch (error) {
-            console.error(`❌ Error deleting assistant ${id}:`, error);
+            console.error(`Error deleting assistant ${id}:`, error);
             return false;
         }
     }
@@ -827,6 +868,7 @@ export class AssistantsService {
                 const content = await fs.readFile(filePath, 'utf8');
                 return content;
             } catch (readError) {
+                console.error(`Error reading physical file ${fileId}:`, readError);
                 // Si no se puede leer el archivo físico, intentar obtener su contenido de Weaviate
                 return this.getFileContentFromWeaviate(assistantId, fileId);
             }
@@ -858,11 +900,11 @@ export class AssistantsService {
                 }
             );
             
-            const responseData = response.data as { data?: { Get?: Record<string, any[]> } } | undefined;
+            const responseData = response.data as { data?: { Get?: Record<string, FileContentObject[]> } } | undefined;
             const objects = responseData?.data?.Get?.[className] || [];
             
             if (objects.length > 0 && objects[0].content) {
-                return objects[0].content as string;
+                return objects[0].content;
             }
             
             throw new Error(`No se encontró contenido para el archivo ${fileId} en Weaviate`);

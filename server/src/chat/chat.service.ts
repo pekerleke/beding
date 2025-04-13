@@ -79,7 +79,7 @@ export class ChatService {
                                     vector: ${JSON.stringify(vector)},
                                     certainty: 0.7
                                 }
-                                limit: 3
+                                limit: 5
                             ) {
                                 ${properties}
                                 _additional {
@@ -270,10 +270,9 @@ export class ChatService {
                 messages,
             }
             
-            console.info('--------- Final request ---------');
             console.info(JSON.stringify(body, null, 2));
+            console.info('--------- Final request ---------');
 
-            // request to openai
             const completion = await axios.post(
                 'https://api.openai.com/v1/chat/completions',
                 body,

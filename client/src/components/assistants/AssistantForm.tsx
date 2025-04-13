@@ -3,6 +3,7 @@ import axios from 'axios';
 import styles from './assistants.module.scss';
 import { Assistant, AssistantFile } from './AssistantsList';
 import FileContentViewer from './FileContentViewer';
+import APIExamplesModal from './APIExamplesModal';
 
 interface AssistantFormProps {
     assistant: Assistant | null;
@@ -25,14 +26,17 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
     const [files, setFiles] = useState<AssistantFile[]>([]);
     const [pendingFiles, setPendingFiles] = useState<File[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isUploadingFile, setIsUploadingFile] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState<number>(0);
+    const [totalFilesToUpload, setTotalFilesToUpload] = useState<number>(0);
     const [error, setError] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [viewingFile, setViewingFile] = useState<AssistantFile | null>(null);
+    const [showApiExamples, setShowApiExamples] = useState(false);
 
-    // Cargar datos del asistente si estamos editando
     useEffect(() => {
         if (assistant) {
             setName(assistant.name);
@@ -51,21 +55,23 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            setSelectedFile(e.target.files[0]);
-        }
-    };
-
-    const handleAddPendingFile = () => {
-        if (!selectedFile) return;
-        
-        // Crear un identificador único para este archivo pendiente
-        const pendingFile: File = selectedFile;
-        setPendingFiles(prev => [...prev, pendingFile]);
-        setSelectedFile(null);
-        
-        // Limpiar el input de archivos
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
+            // When multiple files are selected, add them all to pendingFiles for new assistants
+            if (!assistant) {
+                const newFiles = Array.from(e.target.files);
+                setPendingFiles(prev => [...prev, ...newFiles]);
+                // Clear the input after adding files
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = '';
+                }
+            } else {
+                // For existing assistants, store the selected files
+                setSelectedFiles(Array.from(e.target.files));
+                // Also set the first file for backward compatibility
+                setSelectedFile(e.target.files[0]);
+                
+                // If we're auto-uploading, trigger upload immediately
+                // This option can be added later if needed
+            }
         }
     };
 
@@ -74,30 +80,46 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
     };
 
     const handleFileUpload = async () => {
-        if (!selectedFile || !assistant) return;
+        if ((!selectedFile && selectedFiles.length === 0) || !assistant) return;
         
         setIsUploadingFile(true);
         setError('');
+        setUploadProgress(0);
+        setTotalFilesToUpload(selectedFiles.length);
         
         try {
-            // Crear un objeto FormData para enviar el archivo
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-            formData.append('name', selectedFile.name);
+            let lastResponse = null;
+            let filesProcessed = 0;
             
-            const response = await axios.post<Assistant>(
-                `http://localhost:9290/assistants/${assistant.id}/files`,
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
+            // Upload each selected file one by one
+            for (const file of selectedFiles) {
+                // Crear un objeto FormData para enviar el archivo
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('name', file.name);
+                
+                const response = await axios.post<Assistant>(
+                    `http://localhost:9290/assistants/${assistant.id}/files`,
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
                     }
-                }
-            );
+                );
+                
+                lastResponse = response;
+                filesProcessed++;
+                setUploadProgress(filesProcessed);
+            }
             
-            // Actualizar la lista de archivos
-            setFiles(response.data.files || []);
+            // Actualizar la lista de archivos con la última respuesta
+            if (lastResponse) {
+                setFiles(lastResponse.data.files || []);
+            }
+            
             setSelectedFile(null);
+            setSelectedFiles([]);
             
             // Limpiar el input de archivos
             if (fileInputRef.current) {
@@ -105,8 +127,8 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
             }
             
         } catch (error) {
-            console.error('Error uploading file:', error);
-            setError('Error al subir el archivo. Por favor, inténtalo de nuevo.');
+            console.error('Error uploading files:', error);
+            setError('Error al subir los archivos. Por favor, inténtalo de nuevo.');
         } finally {
             setIsUploadingFile(false);
         }
@@ -118,20 +140,11 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
         try {
             setIsSubmitting(true);
             setError('');
-            
-            console.log(`Intentando eliminar archivo con ID: ${fileId}`);
-            console.log(`URL de la solicitud: http://localhost:9290/assistants/${assistant.id}/files/${fileId}`);
-            
             const response = await axios.delete<Assistant>(`http://localhost:9290/assistants/${assistant.id}/files/${fileId}`);
             
-            console.log('Respuesta de eliminación:', response.data);
-            
-            // Verificar si la respuesta tiene archivos actualizados
             if (response.data && response.data.files) {
-                // Usar directamente los archivos actualizados de la respuesta
                 setFiles(response.data.files);
             } else {
-                // Filtrar manualmente si no hay lista actualizada en la respuesta
                 setFiles(prev => prev.filter(file => file.id !== fileId));
             }
             
@@ -165,7 +178,6 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
             setError('');
 
             if (assistant) {
-                // Actualizar asistente existente
                 const response = await axios.put<Assistant>(
                     `http://localhost:9290/assistants/${assistant.id}`,
                     {
@@ -189,13 +201,11 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                 
                 const newAssistant = response.data;
                 
-                // Si hay archivos pendientes, subirlos al nuevo asistente
                 if (pendingFiles.length > 0) {
                     let updatedAssistant = newAssistant;
                     
                     for (const file of pendingFiles) {
                         try {
-                            // Crear un objeto FormData para enviar el archivo
                             const formData = new FormData();
                             formData.append('file', file);
                             formData.append('name', file.name);
@@ -213,10 +223,8 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                             updatedAssistant = fileResponse.data;
                         } catch (error) {
                             console.error('Error uploading file:', error);
-                            // Continuar con el siguiente archivo aunque falle uno
                         }
                     }
-                    
                     onAssistantCreated(updatedAssistant);
                 } else {
                     onAssistantCreated(newAssistant);
@@ -270,6 +278,14 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
         setViewingFile(null);
     };
 
+    const handleOpenApiExamples = () => {
+        setShowApiExamples(true);
+    };
+
+    const handleCloseApiExamples = () => {
+        setShowApiExamples(false);
+    };
+
     return (
         <div className={styles.formContainer}>
             {error && <div className={styles.errorMessage}>{error}</div>}
@@ -303,7 +319,7 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                         value={prompt}
                         onChange={(e) => setPrompt(e.target.value)}
                         placeholder="Instrucciones de comportamiento para el asistente"
-                        rows={5}
+                        rows={7}
                         disabled={isSubmitting}
                     />
                     <small className={styles.helpText}>Define cómo debe comportarse y responder el asistente.</small>
@@ -355,14 +371,21 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                                     ref={fileInputRef}
                                     onChange={handleFileChange}
                                     disabled={isUploadingFile || isSubmitting}
+                                    multiple
                                 />
                                 <button
                                     type="button"
                                     onClick={handleFileUpload}
                                     className={styles.uploadButton}
-                                    disabled={!selectedFile || isUploadingFile || isSubmitting}
+                                    disabled={(selectedFiles.length === 0 && !selectedFile) || isUploadingFile || isSubmitting}
                                 >
-                                    {isUploadingFile ? 'Subiendo...' : 'Subir archivo'}
+                                    {isUploadingFile 
+                                        ? (totalFilesToUpload > 1 
+                                            ? `Subiendo ${uploadProgress}/${totalFilesToUpload}` 
+                                            : 'Subiendo...') 
+                                        : selectedFiles.length > 0 
+                                            ? `Subir archivos (${selectedFiles.length})` 
+                                            : 'Subir archivo'}
                                 </button>
                             </div>
                         </>
@@ -401,15 +424,14 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                                     ref={fileInputRef}
                                     onChange={handleFileChange}
                                     disabled={isSubmitting}
+                                    multiple
                                 />
-                                <button
-                                    type="button"
-                                    onClick={handleAddPendingFile}
+                                <label 
+                                    htmlFor="file-upload" 
                                     className={styles.uploadButton}
-                                    disabled={!selectedFile || isSubmitting}
                                 >
-                                    Agregar archivo
-                                </button>
+                                    Seleccionar archivos
+                                </label>
                             </div>
                         </>
                     )}
@@ -442,14 +464,24 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                                     </button>
                                 </div>
                             ) : (
-                                <button
-                                    type="button"
-                                    onClick={() => setShowDeleteConfirm(true)}
-                                    className={styles.deleteButton}
-                                    disabled={isSubmitting}
-                                >
-                                    Eliminar Asistente
-                                </button>
+                                <div className={styles.leftActions}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowDeleteConfirm(true)}
+                                        className={styles.deleteButton}
+                                        disabled={isSubmitting}
+                                    >
+                                        Eliminar Asistente
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleOpenApiExamples}
+                                        className={styles.apiButton}
+                                        disabled={isSubmitting}
+                                    >
+                                        Ver API
+                                    </button>
+                                </div>
                             )}
                         </>
                     )}
@@ -482,6 +514,14 @@ const AssistantForm: React.FC<AssistantFormProps> = ({
                     fileName={viewingFile.name}
                     isOpen={!!viewingFile}
                     onClose={handleCloseFileViewer}
+                />
+            )}
+
+            {assistant && showApiExamples && (
+                <APIExamplesModal
+                    isOpen={showApiExamples}
+                    onClose={handleCloseApiExamples}
+                    assistant={assistant}
                 />
             )}
         </div>

@@ -1,12 +1,12 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseInterceptors, UploadedFile } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseInterceptors, UploadedFile, UploadedFiles } from '@nestjs/common';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
 import * as fs from 'fs/promises';
 import { AssistantsService, Assistant, CreateAssistantDto, AssistantFile } from './assistants.service';
 
 // Define un DTO para actualización
-interface UpdateAssistantDto extends CreateAssistantDto {}
+type UpdateAssistantDto = CreateAssistantDto;
 
 // Ampliar la interfaz Request para incluir fileId
 declare module 'express' {
@@ -91,6 +91,51 @@ export class AssistantsController {
       return this.assistantsService.addFile(id, assistantFile, fileContent);
     } catch (error: any) {
       console.error('Error en la carga de archivo:', error);
+      throw error;
+    }
+  }
+
+  @Post(':id/files/batch')
+  @UseInterceptors(FilesInterceptor('files', 10, { storage }))
+  async addMultipleFiles(
+    @Param('id') id: string, 
+    @UploadedFiles() files: Express.Multer.File[]
+  ): Promise<Assistant | undefined> {
+    try {
+      if (!files || files.length === 0) {
+        return this.assistantsService.findOne(id);
+      }
+      
+      let updatedAssistant: Assistant | undefined;
+      
+      // Process each file sequentially
+      for (const file of files) {
+        const fileName = file.originalname;
+        
+        const assistantFile: AssistantFile = {
+          id: path.basename(file.path),
+          name: fileName,
+          size: file.size,
+          type: file.mimetype,
+          uploadedAt: new Date(),
+        };
+        
+        // Leer el contenido del archivo
+        let fileContent = '';
+        if (file.mimetype === 'text/plain' || fileName.endsWith('.txt')) {
+          // Para archivos de texto, leer el contenido directamente
+          fileContent = await fs.readFile(file.path, 'utf8');
+        } else {
+          // Para otros tipos de archivos, usar un mensaje genérico
+          fileContent = `Contenido del archivo ${fileName} (tipo: ${file.mimetype})`;
+        }
+        
+        updatedAssistant = await this.assistantsService.addFile(id, assistantFile, fileContent);
+      }
+      
+      return updatedAssistant;
+    } catch (error) {
+      console.error('Error en la carga de múltiples archivos:', error);
       throw error;
     }
   }

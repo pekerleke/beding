@@ -31,7 +31,7 @@ const AssistantChat: React.FC = () => {
                 ) : (
                     <div className={styles.emptyState}>
                         <div className={styles.welcomeMessage}>
-                            <h2>Bienvenido Beding</h2>
+                            <h2>Bienvenido a Beding</h2>
                             <p>Selecciona un asistente de la lista o crea uno nuevo para comenzar a chatear.</p>
                             <p>Cada asistente puede ser personalizado con instrucciones específicas y contenido de referencia.</p>
                         </div>

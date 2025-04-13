@@ -189,7 +189,6 @@
     text-align: center;
     padding: 40px;
     border-radius: 12px;
-    background-color: var(--bg-tertiary);
     border: 1px dashed var(--border-color);
 
     h2 {
@@ -249,32 +248,50 @@
 .formActions {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 10px;
     margin-top: 24px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+}
 
-    button {
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        cursor: pointer;
-        border: none;
-
-        &:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-    }
+.leftActions {
+    display: flex;
+    gap: 12px;
 }
 
 .rightActions {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+}
+
+.apiButton {
+    background-color: var(--bg-tertiary);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    
+    &:hover:not(:disabled) {
+        background-color: rgba(33, 136, 255, 0.1);
+    }
+    
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 }
 
 .deleteButton {
     background-color: #d73a49;
     color: white;
+    border: 1px solid #d73a49;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
 
     &:hover:not(:disabled) {
         background-color: #cb2431;
@@ -297,6 +314,11 @@
     background-color: var(--bg-tertiary);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
 
     &:hover:not(:disabled) {
         background-color: var(--hover-color);
@@ -306,6 +328,12 @@
 .submitButton {
     background-color: var(--button-primary);
     color: white;
+    border: 1px solid var(--button-primary);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
 
     &:hover:not(:disabled) {
         background-color: var(--button-primary-hover);
@@ -506,6 +534,10 @@
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.2s;
+    margin-bottom: 0 !important;
+    display: flex !important
+;
+    align-items: center;
 
     &:hover:not(:disabled) {
         background-color: var(--hover-color);
@@ -598,4 +630,78 @@
     align-items: center;
     padding: 20px;
     color: var(--text-secondary);
+}
+
+// API Examples Modal styles
+.apiExamplesContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.apiTabs {
+  display: flex;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.apiTabButton {
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+  position: relative;
+  
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.apiTabActive {
+  color: var(--accent-color);
+  font-weight: 500;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+  }
+}
+
+.apiExampleContent {
+  h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+  }
+  
+  h4 {
+    margin: 20px 0 10px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+  }
+  
+  p {
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+}
+
+.codeBlock {
+  background-color: var(--bg-tertiary);
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
 }

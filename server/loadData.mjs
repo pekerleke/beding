@@ -51,10 +51,10 @@ for (const filename of files) {
                 source: filename
             }
         });
-        console.log(`✓ Cargado: ${filename}`);
+        console.info(`✓ Cargado: ${filename}`);
     } catch (err) {
         console.error(`❌ Error con "${filename}":`, err.response?.data || err.message);
     }
 }
 
-console.log("📚 Carga completa.");
+console.info("📚 Carga completa.");
