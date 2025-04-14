@@ -27,7 +27,7 @@ La aplicación de demostración de chat de Beding permite cargar documentos en W
 
 ## Instalación y Ejecución
 
-Seguí los pasos en la [Wiki de la App](https://github.com/pekerleke/semantic-search-chat-demo/wiki) para levantar la aplicación por primera vez.
+Seguí los pasos en la [Wiki de la App](https://github.com/pekerleke/beding/wiki) para levantar la aplicación por primera vez.
 
 ## Notas
 
